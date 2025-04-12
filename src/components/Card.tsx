@@ -10,7 +10,8 @@ export default function Card(props: any) {
         }
     }, [props.car])
     return car && (
-        <div className='border-4 border-white hover:border-gray-500 rounded-xl p-1'>
+        <div  onClick={() => props.onSelect && props.onSelect(car)}
+             className='border-4 border-white hover:border-gray-500 rounded-xl p-1'>
             <div className='relative bg-gradient-to-b from-[#1a1a1a] via-gray-500 to-[#1a1a1a] border shadow-md gap-2 flex flex-col justify-between 
             rounded-xl cursor-pointer text-[#fff] p-5'>
                 <h2 className="font-bold text-[20px]">{car?.name}</h2>

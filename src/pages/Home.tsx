@@ -1,13 +1,13 @@
 'use client'
 
-import './index.css'
+import '../index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
-import SloganSection from './components/SloganSection'
-import HeaderSection from './components/HeaderSection'
-import DevisesSection from './components/DevisesSection'
-import GalerieSection from './components/GalerieSection'
-import FilterSection from './components/FilterSection'
-import {getCarList} from '../Services'
+import SloganSection from '../components/SloganSection'
+import HeaderSection from '../components/HeaderSection'
+import DevisesSection from '../components/DevisesSection'
+import GalerieSection from '../components/GalerieSection'
+import FilterSection from '../components/FilterSection'
+import {getCarList} from '../../Services'
 import {useEffect, useState} from 'react'
 
 
@@ -18,13 +18,12 @@ if (!PUBLISHABLE_KEY) {
   throw new Error('Add your Clerk Publishable Key to the .env file')
 }
 
-export default function Page() {
+export default function Home() {
 
       const [carList, setCarList] = useState([])
       const [carFilter, setCarFilter] = useState([])
 
-      const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-      const [priceOrder, setPriceOrder] = useState<number | null>(null);
+     
       const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
     
@@ -39,20 +38,12 @@ export default function Page() {
         setCarFilter(result.carLists)
     }
 
-    const filterCardList = (brand: string) => {
-      setSelectedBrand(brand);
-      applyFilters(brand, priceOrder, selectedDate);
-    };
     
     const filterDate = (date: string) => {
       setSelectedDate(date);
       applyFilters(selectedBrand, priceOrder, date);
     };
 
-    const filterPrice = (order: any) => {
-      setPriceOrder(order);
-      applyFilters(selectedBrand, order, selectedDate);
-    };
 
     const applyFilters = (brand: string | null, order: any | null, date: string | null) => {
       let filtered = [...carFilter];
@@ -74,17 +65,19 @@ export default function Page() {
     
 
     
+   
+
+
   return (
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <main>
         <SloganSection />
-        <HeaderSection carFilter={carFilter}  setDate={(value:string) => filterDate(value)}/>
+        <HeaderSection carFilter={carFilter} carList={carList} setCarList={setCarList}/>
         <DevisesSection />
-        <FilterSection carFilter={carFilter} setBrand={(value:string) => filterCardList(value)} orderPrice={(value:string)=>filterPrice(value)} />
+        <FilterSection carFilter={carFilter} carList={carList} setCarList={setCarList} />
         <GalerieSection carList={carList} />
        
       </main>
     </ClerkProvider>
   )
 }
-

@@ -1,5 +1,52 @@
 import { FaCar , FaTruck , FaSearch , FaPlus } from "react-icons/fa";
-export default function Form() {
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+export default function Form({carFilter, carList, setCarList}:any) {
+
+    const [dateList , setdateList] = useState<any>([])
+
+
+    const  dateSet = new Set();
+
+    useEffect(() => {
+        if(carFilter){
+            handlerFilter()
+        }
+    }, [carFilter])
+
+    const handlerFilter = () => {
+        carFilter.forEach((element :any) =>{
+            dateSet.add(element.lieuDeDepart)
+        } )
+        setdateList(Array.from(dateSet))
+    }
+
+   
+    const filterDate = (date: string) => {
+       
+        applyFilters( date);
+      };
+  
+  
+      const applyFilters = ( date: string | null) => {
+        let filtered = [...carFilter];
+        if (date) {
+          filtered = filtered.filter((item: any) => item.lieuDeDepart === date);
+        }
+      
+        setCarList(filtered);
+      };
+
+
+    const navigate = useNavigate();
+
+    const handleNavigation = () => {
+        navigate('/about', { state: { carList , carFilter, selectedDate } }); 
+      };
+
+   const [selectedDate, setSelectedDate] = useState<string>(""); 
     return (
         <div className="bg-white rounded-lg p-4 rounded-lg mt-4">
 
@@ -21,7 +68,14 @@ export default function Form() {
                 <div className="flex items-center gap-8">
                     <div className="w-full border border-gray-300 p-3 rounded-lg relative">
                     <FaSearch className="absolute left-4 top-4" />
-                    <input placeholder="Aeroport,ville ou adresse" type="text" className="outline-none w-full h-full pl-8" />
+                        <select value={selectedDate}
+                             onChange={(e) => { const value = e.target.value;
+                                                 setSelectedDate(value);
+                                                filterDate(value);}} className="select select-bordered w-full max-w-xs">
+                                {dateList.map((item: string, index: number) => (
+                                    <option key={index}>{item}</option>
+                                ))}
+                        </select>
                     </div>
                     <div className="hidden md:flex items-center-gap-3" text-gray-500>
                         <FaPlus />
@@ -43,7 +97,7 @@ export default function Form() {
                         </div>
                     </div>
                     <div className="flex flex-col">
-                        <button className="block w-full bg-[#ff5f00] text-white p-4 px-2 rounded-md font-bold mt-4">Voir les vehicules</button>
+                        <button onClick={handleNavigation} className="block w-full bg-[#ff5f00] text-white p-4 px-2 rounded-md font-bold mt-4">Voir les vehicules</button>
                     </div>
                 </div>
                 

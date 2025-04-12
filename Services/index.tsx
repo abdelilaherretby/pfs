@@ -17,6 +17,7 @@ export const getCarList = async () => {
     typeBoite
     type
     updatedAt
+    lieuDeDepart
   }
 }
     `;
