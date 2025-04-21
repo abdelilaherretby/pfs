@@ -7,7 +7,6 @@ export const getCarList = async () => {
     createdAt
     places
     publishedAt
-    price
     name
     marque
     id
@@ -15,10 +14,28 @@ export const getCarList = async () => {
       url
     }
     typeBoite
-    type
+    fuelType
     updatedAt
-    lieuDeDepart
+    lieuDeRetour
+    lieuDeRetrait
+    carType
+    prixParJour
+    kilometrageInclus
+    tarifKmSupp
+    tarifKmIlimitesParJour
   }
+
+  reservations {
+      dateDeDepart
+      dateDeRetour
+      id
+      carList{
+        id
+        name
+        marque
+      }
+      
+    }
 }
     `;
     const result = await request("https://eu-west-2.cdn.hygraph.com/content/cm98d93mt00c908wbcfhpn9ui/master", query);

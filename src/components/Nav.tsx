@@ -1,4 +1,4 @@
-import logo from "../../public/images/sixt-logo.png"
+import logo from "../../public/images/logo.png"
 import { IoMdMenu } from "react-icons/io";
 import { TbWorld } from "react-icons/tb";
 import { FaCarAlt } from "react-icons/fa";
@@ -14,7 +14,9 @@ export default function Nav() {
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-3">
         <IoMdMenu className="text-2xl text-white cursor-pointer hover:scale-125 transistion-all"/>
-        <img src={logo} alt="logo" width={70} /> 
+        <img src={logo} alt="logo"  width={100}
+             style={{ filter: 'invert(36%) sepia(100%) saturate(1000%) hue-rotate(190deg) brightness(100%) contrast(97%)',}}
+        />
       </div>
       <ul className="flex items-center gap-4">
         {menu.map((item,index)=>(

@@ -9,6 +9,10 @@ import GalerieSection from '../components/GalerieSection'
 import FilterSection from '../components/FilterSection'
 import {getCarList} from '../../Services'
 import {useEffect, useState} from 'react'
+import CarCarousel from '../components/CarCarousel'
+import TroisEtapes from '../components/TroisEtapes'
+import FirstFooter from '../components/FirstFooter'
+import StatsSection from "../components/StatsSection";
 
 
 
@@ -23,8 +27,10 @@ export default function Home() {
       const [carList, setCarList] = useState([])
       const [carFilter, setCarFilter] = useState([])
 
+      const [reservationList, setReservationList] = useState([])
+
      
-      const [selectedDate, setSelectedDate] = useState<string | null>(null);
+      /*const [selectedDate, setSelectedDate] = useState<string | null>(null);*/
 
     
     useEffect(() => {
@@ -36,10 +42,13 @@ export default function Home() {
         console.log(result.carLists)
         setCarList(result.carLists)
         setCarFilter(result.carLists)
+        setReservationList(result.reservations)
+
     }
 
+
     
-    const filterDate = (date: string) => {
+    /*const filterDate = (date: string) => {
       setSelectedDate(date);
       applyFilters(selectedBrand, priceOrder, date);
     };
@@ -61,7 +70,7 @@ export default function Home() {
       }
     
       setCarList(filtered);
-    };
+    };*/
     
 
     
@@ -72,10 +81,15 @@ export default function Home() {
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <main>
         <SloganSection />
-        <HeaderSection carFilter={carFilter} carList={carList} setCarList={setCarList}/>
+        <HeaderSection carFilter={carFilter} carList={carList} setCarList={setCarList} reservationList={reservationList} />
         <DevisesSection />
-        <FilterSection carFilter={carFilter} carList={carList} setCarList={setCarList} />
-        <GalerieSection carList={carList} />
+       {/* <FilterSection carFilter={carFilter} carList={carList} setCarList={setCarList} />*/}
+       {/* <GalerieSection carList={carList} />*/} 
+       <CarCarousel carList={carList} />
+       <TroisEtapes/>
+       <StatsSection />
+       <FirstFooter/>
+      
        
       </main>
     </ClerkProvider>

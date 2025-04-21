@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Card from './Card';
 import CarDetails from './CarDetails';
 
-export default function GalerieSection({ carList }: any) {
+export default function GalerieSection({ carList , differenceEnJours }: any) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
@@ -58,6 +58,7 @@ export default function GalerieSection({ carList }: any) {
                   <CarDetails
                     car={carList[selectedIndex!]}
                     onBack={() => setSelectedIndex(null)}
+                    differenceEnJours={differenceEnJours}
                    
                   />
                 </div>

@@ -2,7 +2,7 @@ import { FaCar, FaTruck, FaPlus } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Form({ carFilter, carList, setCarList, reservationList }: any) {
+export default function Form({ handleCloseForm, carFilter, carList, setCarList, reservationList }: any) {
   const [lieuRetraitList, setLieuRetraitList] = useState<any>([]);
   const [lieuRetourList, setLieuRetourList] = useState<any>([]);
   const [selectedLieuRetrait, setSelectedLieuRetrait] = useState<string>("");
@@ -85,6 +85,9 @@ export default function Form({ carFilter, carList, setCarList, reservationList }
           reservationList
         }
       });
+      return  true ;
+    } else {
+      return false ;
     }
   };
 
@@ -95,27 +98,32 @@ export default function Form({ carFilter, carList, setCarList, reservationList }
     }
   }, [lieuRetraitList]);
 
-  return (
-    <div className="bg-white rounded-lg p-3 sm:p-4 mt-4">
-      {/* Top Buttons */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-4 justify-center sm:justify-start">
-        <button className="text-white rounded-full flex items-center gap-2 p-2 px-3 bg-[#1a1a1a]">
-          <FaCar />
-          <p>Véhicules</p>
-        </button>
-        <button className="text-[#1a1a1a] rounded-full flex items-center gap-2 p-2 px-3 hover:bg-gray-200">
-          <FaTruck />
-          <p>Utilitaires</p>
-        </button>
-      </div>
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) handleCloseForm();
+  };
 
-      {/* Grid Structure */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 lg:place-items-center gap-4 lg:gap-0">
-        {/* Lieu de retrait / retour */}
-        <div className="w-full">
-          <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
-            {/* Select Retrait */}
-            <div className="w-full sm:w-[220px] p-3 rounded-lg relative">
+  return (
+    <div onClick={handleOverlayClick}
+      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 flex items-start justify-center z-50">
+      <div className="bg-white mt-10 p-6 rounded-xl shadow-lg w-full max-w-md lg:max-w-2xl mx-auto relative">
+
+        {/* Form content */}
+        <div className="bg-white rounded-lg p-3">
+          {/* Top Buttons */}
+          <div className="flex flex-wrap items-center gap-4 mb-4 justify-center">
+            <button className="text-white rounded-full flex items-center gap-2 p-2 px-3 bg-[#1a1a1a]">
+              <FaCar />
+              <p>Véhicules</p>
+            </button>
+            <button className="text-[#1a1a1a] rounded-full flex items-center gap-2 p-2 px-3 hover:bg-gray-200">
+              <FaTruck />
+              <p>Utilitaires</p>
+            </button>
+          </div>
+
+          {/* Lieu de retrait / retour */}
+          <div className="flex flex-col gap-4 mb-4">
+            <div className="w-full p-3 rounded-lg relative">
               <select
                 value={selectedLieuRetrait}
                 onChange={(e) => setSelectedLieuRetrait(e.target.value)}
@@ -132,20 +140,21 @@ export default function Form({ carFilter, carList, setCarList, reservationList }
               </div>
             </div>
 
-            {/* + Icon */}
             {!showSecondSelect && (
+            <div className="flex justify-center my-3">
               <div
-                className="flex items-center gap-2 text-gray-500 cursor-pointer mb-4"
+                className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-gray-700"
                 onClick={() => setShowSecondSelect(true)}
               >
                 <FaPlus />
                 <p className="text-[12px]">Lieu de retour différent</p>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Select Retour */}
+
             {showSecondSelect && (
-              <div className="w-full sm:w-[220px] p-3 rounded-lg relative">
+              <div className="w-full p-3 rounded-lg relative">
                 <select
                   value={selectedLieuRetour}
                   onChange={(e) => setSelectedLieuRetour(e.target.value)}
@@ -163,86 +172,57 @@ export default function Form({ carFilter, carList, setCarList, reservationList }
               </div>
             )}
           </div>
-        </div>
 
-        {/* Desktop only: Dates + Button */}
-        <div className="hidden md:flex items-center gap-4">
-          <div className="flex p-3 flex-col">
-            <p className="mb-2 text-[11px] font-bold">Date de départ</p>
-            <input
-              type="date"
-              value={selectedDateDepart}
-              onChange={(e) => setSelectedDateDepart(e.target.value)}
-              className="border border-gray-300 p-3 rounded-lg outline-none cursor-pointer mb-4"
-            />
-            <div className="h-4 mt-1">
-              {errors.dateDepart && (
-                <p className="text-red-500 text-xs mt-1">{errors.dateDepart}</p>
-              )}
+          {/* Dates */}
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="mb-2 text-[11px] font-bold">Date de départ</p>
+              <input
+                type="date"
+                value={selectedDateDepart}
+                onChange={(e) => setSelectedDateDepart(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg outline-none cursor-pointer w-full"
+              />
+              <div className="h-4 mt-1">
+                {errors.dateDepart && (
+                  <p className="text-red-500 text-xs mt-1">{errors.dateDepart}</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-2 text-[11px] font-bold">Date de retour</p>
+              <input
+                type="date"
+                value={selectedDateRetour}
+                onChange={(e) => setSelectedDateRetour(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg outline-none cursor-pointer w-full"
+              />
+              <div className="h-4 mt-1">
+                {errors.dateRetour && (
+                  <p className="text-red-500 text-xs mt-1">{errors.dateRetour}</p>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="flex p-3 flex-col">
-            <p className="mb-2 text-[11px] font-bold">Date de retour</p>
-            <input
-              type="date"
-              value={selectedDateRetour}
-              onChange={(e) => setSelectedDateRetour(e.target.value)}
-              className="border border-gray-300 p-3 rounded-lg outline-none cursor-pointer mb-4"
-            />
-            <div className="h-4 mt-1">
-              {errors.dateRetour && (
-                <p className="text-red-500 text-xs mt-1">{errors.dateRetour}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-col">
+          {/* Submit button */}
+          <div className="mt-6">
             <button
-              onClick={handleNavigation}
-              className="block w-full bg-blue-600 hover:bg-blue-700 text-white p-4 px-2 rounded-md font-bold mb-4"
+               onClick={(e) => {
+                if (handleNavigation()) {
+                  handleOverlayClick(e);
+                }
+              }}
+              className="block w-full bg-blue-600 hover:bg-blue-700 text-white p-4 px-2 rounded-md font-bold"
             >
               Voir les véhicules
             </button>
           </div>
         </div>
-
-        {/* Mobile only: Dates + Button */}
-        <div className="flex flex-col gap-4 md:hidden mt-4 w-full">
-          <div className="flex flex-col">
-            <p className="mb-1 text-[11px] font-bold">Date de départ</p>
-            <input
-              type="date"
-              value={selectedDateDepart}
-              onChange={(e) => setSelectedDateDepart(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-lg outline-none cursor-pointer"
-            />
-            {errors.dateDepart && (
-              <p className="text-red-500 text-xs mt-1">{errors.dateDepart}</p>
-            )}
-          </div>
-
-          <div className="flex flex-col">
-            <p className="mb-1 text-[11px] font-bold">Date de retour</p>
-            <input
-              type="date"
-              value={selectedDateRetour}
-              onChange={(e) => setSelectedDateRetour(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-lg outline-none cursor-pointer"
-            />
-            {errors.dateRetour && (
-              <p className="text-red-500 text-xs mt-1">{errors.dateRetour}</p>
-            )}
-          </div>
-
-          <button
-            onClick={handleNavigation}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-md font-bold"
-          >
-            Voir les véhicules
-          </button>
-        </div>
       </div>
     </div>
   );
 }
+
+
