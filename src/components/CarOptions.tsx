@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import InfoPopup from "./InfoPopup";
 import DetailPrixPopup from "./DetailPrixPopup"; // importe ton nouveau composant
+import { useNavigate } from "react-router-dom";
 
 const CarOptions = ({ car, differenceEnJours }: { car: any; differenceEnJours: any }) => {
  
@@ -49,6 +50,16 @@ const CarOptions = ({ car, differenceEnJours }: { car: any; differenceEnJours: a
   };
   
   
+  const navigate = useNavigate();
+  const handleNavigation = () => {
+    
+      navigate('/booking_page', {
+        state: {
+          
+        }
+      });
+    
+  };
 
 
   return (
@@ -126,8 +137,9 @@ const CarOptions = ({ car, differenceEnJours }: { car: any; differenceEnJours: a
           <span className="text-sm text-gray-500"> / jour</span>
           <div className="text-sm text-gray-600">{calculateTotal()} € total</div>
         </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-xl transition-all">
-          Suivant
+        <button   onClick={handleNavigation}
+        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-xl transition-all">
+            Réserver
         </button>
       </div>
 

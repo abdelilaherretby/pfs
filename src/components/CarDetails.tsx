@@ -55,7 +55,7 @@ export default function CarDetails({ car, onBack , differenceEnJours}: { car: an
                         </div>
                         <div className="flex items-center gap-2">
                             <GiCarDoor className="text-xl" />
-                            <span>5 Portes</span>
+                            <span>4 Portes</span>
                         </div>
                     </div>
                     </div>
